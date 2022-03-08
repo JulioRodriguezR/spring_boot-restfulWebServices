@@ -34,7 +34,7 @@ public class UserResource {
 	
 	@PostMapping(path="/users")
 	public ResponseEntity<User> createUser(@RequestBody User user) {
-		// No pasar id en el path, la identificación se ha de asignar en el backEnd
+		// Don't pass id in the path, backEnd work
 		User savedUser = srv.save(user);
 		
 		// CREATED

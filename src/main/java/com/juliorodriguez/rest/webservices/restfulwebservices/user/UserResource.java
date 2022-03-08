@@ -24,7 +24,7 @@ public class UserResource {
 	}
 	
 	@GetMapping(path="/users/{id}")
-	public User retriveAllUsers(@PathVariable int id) {
+	public User retriveOneUser(@PathVariable int id) {
 		User user = srv.findOne(id);
 		if (user == null) {
 			throw new UserNotFoundException("id- " + id);

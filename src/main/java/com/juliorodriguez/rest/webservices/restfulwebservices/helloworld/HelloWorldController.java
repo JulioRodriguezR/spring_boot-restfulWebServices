@@ -34,4 +34,5 @@ public class HelloWorldController {
 	public String helloWorldInternationalized(@RequestHeader(name = "Accept-lenguaje", required = true) Locale locale) {
 		return messageSource.getMessage("good.morning.message", null, "Default Message", locale);
 	}
+
 }

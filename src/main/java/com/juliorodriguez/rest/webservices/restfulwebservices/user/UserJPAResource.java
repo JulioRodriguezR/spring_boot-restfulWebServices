@@ -25,9 +25,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UserJPAResource {
 
   @Autowired
-  private UserDaoService srv;
-
-  @Autowired
   private UserRepository userRepository;
 
   @GetMapping(path = "/jpa/users")
@@ -36,11 +33,13 @@ public class UserJPAResource {
   }
 
   @GetMapping(path = "/jpa/users/{id}")
-  public Optional<User> retriveUser(@PathVariable int id) {
+  public EntityModel<User> retriveUser(@PathVariable int id) {
     Optional<User> user = userRepository.findById(id);
+
     if (!user.isPresent()) {
       throw new UserNotFoundException("id- " + id);
     }
+    
     // "all-users", SERVER_PATH + "/users"
     // retrieveAllUsers
     EntityModel<User> resource = EntityModel.of(user.get());// new EntityModel<User>(user.get());
@@ -48,7 +47,7 @@ public class UserJPAResource {
     WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
 
     resource.add(linkTo.withRel("all-users"));
-    return user;
+    return resource;
   }
 
   @PostMapping(path = "/jpa/users")

@@ -17,16 +17,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 public class UserResource {
-	
+
 	@Autowired
 	private UserDaoService srv;
-	
-	@GetMapping(path="/users")
+
+	@GetMapping(path = "/users")
 	public List<User> retriveAllUsers() {
-		return srv.findAll(); 
+		return srv.findAll();
 	}
-	
-	@GetMapping(path="/users/{id}")
+
+	@GetMapping(path = "/users/{id}")
 	public User retriveOneUser(@PathVariable int id) {
 		User user = srv.findOne(id);
 		if (user == null) {
@@ -34,28 +34,28 @@ public class UserResource {
 		}
 		return user;
 	}
-	
-	@PostMapping(path="/users")
+
+	@PostMapping(path = "/users")
 	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 		// Don't pass id in the path, backEnd work
 		User savedUser = srv.save(user);
-		
+
 		// CREATED
-		// resource location created  savedUser.getId()
+		// resource location created savedUser.getId()
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(savedUser.getId()).toUri();
-		
+
 		return ResponseEntity.created(location).build();
 	}
-	
-	@DeleteMapping(path="/users/{id}")
+
+	@DeleteMapping(path = "/users/{id}")
 	public void deleteUser(@PathVariable int id) {
 		User user = srv.deletedById(id);
 		if (user == null) {
 			throw new UserNotFoundException("id- " + id);
 		}
 	}
-	
+
 }

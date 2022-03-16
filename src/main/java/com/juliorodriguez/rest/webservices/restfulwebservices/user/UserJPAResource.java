@@ -1,11 +1,16 @@
 package com.juliorodriguez.rest.webservices.restfulwebservices.user;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +31,7 @@ public class UserJPAResource {
   private UserRepository userRepository;
 
   @GetMapping(path = "/jpa/users")
-  public List<User> retriveAllUsers() {
+  public List<User> retrieveAllUsers() {
     return userRepository.findAll();
   }
 
@@ -36,6 +41,13 @@ public class UserJPAResource {
     if (!user.isPresent()) {
       throw new UserNotFoundException("id- " + id);
     }
+    // "all-users", SERVER_PATH + "/users"
+    // retrieveAllUsers
+    EntityModel<User> resource = EntityModel.of(user.get());// new EntityModel<User>(user.get());
+
+    WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+
+    resource.add(linkTo.withRel("all-users"));
     return user;
   }
 

@@ -26,7 +26,7 @@ public class UserResource {
 	private UserDaoService srv;
 
 	@GetMapping(path = "/users")
-	public List<User> retriveAllUsers() {
+	public List<User> retrieveAllUsers() {
 		return srv.findAll();
 	}
 
@@ -41,7 +41,7 @@ public class UserResource {
 		EntityModel<User> model = EntityModel.of(user);
 
 		// Add link to entity model
-		WebMvcLinkBuilder linkToUsers = linkTo(methodOn(this.getClass()).retriveAllUsers());
+		WebMvcLinkBuilder linkToUsers = linkTo(methodOn(this.getClass()).retrieveAllUsers());
 		model.add(linkToUsers.withRel("all-users"));
 
 		return model;
